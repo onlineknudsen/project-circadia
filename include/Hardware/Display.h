@@ -12,6 +12,9 @@
 class Display {
     public:
         void printMsgCenter(const char* msg);
+        void printMsgCenterUnderline(const char* msg, int startChar, int endChar);
+        void underline(int startCol, int endCol);
+        void noUnderline();
         void clear();
         Display(int csPin);
         void update();
