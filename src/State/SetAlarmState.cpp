@@ -2,13 +2,16 @@
 #include "State/StateMachine.h"
 
 SetAlarmState::SetAlarmState(Hardware& hardware, StateMachine& stateMachine) : State(hardware, stateMachine) {
-    lastTime_ = millis();
+
 }
 
 void SetAlarmState::update() {
 
+    if(hardware_.getInput().getDPad()) {
+        lastInteraction_ = millis();
+    }
 
-    if((millis() - lastTime_) > TIMEOUT) {
+    if((millis() - lastInteraction_) > TIMEOUT) {
         stateMachine_.setCurrentState(&stateMachine_.getClockState());
     }
 }
@@ -18,7 +21,7 @@ void SetAlarmState::draw() {
 }
 
 void SetAlarmState::onEnter() {
-    lastTime_ = millis();
+    lastInteraction_ = millis();
 }
 
 void SetAlarmState::onExit() {

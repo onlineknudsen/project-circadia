@@ -6,6 +6,9 @@ SetClockState::SetClockState(Hardware& hardware, StateMachine& stateMachine) : S
 
 void SetClockState::update() {
 
+    if(hardware_.getInput().getDPad()) {
+        lastInteraction_ = millis();
+    }
 
     if((millis() - lastTime_) > TIMEOUT) {
         stateMachine_.setCurrentState(&stateMachine_.getClockState());

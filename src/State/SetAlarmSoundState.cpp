@@ -5,8 +5,11 @@ SetAlarmSoundState::SetAlarmSoundState(Hardware& hardware, StateMachine& stateMa
 }
 
 void SetAlarmSoundState::update() {
+    if(hardware_.getInput().getDPad()) {
+        lastInteraction_ = millis();
+    }
 
-    if((millis() - lastTime_) > TIMEOUT) {
+    if((millis() - lastInteraction_) > TIMEOUT) {
         stateMachine_.setCurrentState(&stateMachine_.getClockState());
     }
 }
@@ -16,7 +19,7 @@ void SetAlarmSoundState::draw() {
 }
 
 void SetAlarmSoundState::onEnter() {
-    lastTime_ = millis();
+    lastInteraction_ = millis();
 }
 
 void SetAlarmSoundState::onExit() {
