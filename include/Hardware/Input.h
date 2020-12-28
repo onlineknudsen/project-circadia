@@ -22,7 +22,7 @@ class Input {
             Right
         };
 
-        Input(int dUpPin, int dDownPin, int dLeftPin, int dRightPin);
+        Input(byte dUpPin, byte dDownPin, byte dLeftPin, byte dRightPin);
 
         bool getDPadBtn(DPad btn);
 
@@ -38,7 +38,7 @@ class Input {
         byte dPad_;
         byte oldDPad_;
         unsigned long dPadHoldStart_[4];
-        int dPadPins_[4];
+        byte dPadPins_[4];
         const unsigned long DEBOUNCE_THRESHOLD = 50;
         unsigned long lastDebounce_;
 
@@ -47,9 +47,6 @@ class Input {
 
         bool checkDPadBtnHold(DPad btn, unsigned long time);
         bool getOldDPadBtn(DPad btn);
-
-
-
 
 };
 

@@ -1,12 +1,12 @@
 #include "Hardware/Input.h"
 
-Input::Input(int dUpPin, int dDownPin, int dLeftPin, int dRightPin)  {
+Input::Input(byte dUpPin, byte dDownPin, byte dLeftPin, byte dRightPin)  {
     dPadPins_[DPad::Up] = dUpPin;
     dPadPins_[DPad::Down] = dDownPin;
     dPadPins_[DPad::Left] = dLeftPin;
     dPadPins_[DPad::Right] = dRightPin;
 
-    for(int i = 0; i < 4; i++) {
+    for(byte i = 0; i < 4; i++) {
         pinMode(dPadPins_[i], INPUT_PULLUP);
     }
 
@@ -18,7 +18,7 @@ void Input::update() {
         return;
 
     lastDebounce_ = millis();
-    for(int i = 0; i < 4; i++) {
+    for(byte i = 0; i < 4; i++) {
         bool btnBit = !digitalRead(dPadPins_[i]);
         byte posMask = 1 << i;
         dPad_ = (dPad_ & ~posMask) | (btnBit << i);
@@ -58,7 +58,7 @@ bool Input::checkDPadBtnsHold(byte btns, unsigned long time) {
 
 
     currentHold_ = btns;
-    for(int i = 0; i < 4; i++) {
+    for(byte i = 0; i < 4; i++) {
         bool bit = (btns >> i) & 1;
         if(bit) {
             if(!checkDPadBtnHold(static_cast<DPad>(i), time))
