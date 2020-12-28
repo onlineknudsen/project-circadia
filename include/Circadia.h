@@ -2,18 +2,18 @@
 #define STATE_MACHINE_H
 
 #include "Hardware/Hardware.h"
-#include "ClockState.h"
-#include "SetAlarmState.h"
-#include "SetClockState.h"
-#include "SetAlarmSoundState.h"
+#include "State/ClockState.h"
+#include "State/SetAlarmState.h"
+#include "State/SetClockState.h"
+#include "State/SetAlarmSoundState.h"
 
 class State;
 
 #define TIMEOUT 5000
 
-class StateMachine {
+class Circadia {
     public:
-        StateMachine(Hardware& hardware);
+        Circadia(Hardware& hardware);
         void setCurrentState(State* newState);
         State& getCurrentState();
         void update();

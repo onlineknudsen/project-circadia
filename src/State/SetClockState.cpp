@@ -1,7 +1,7 @@
 #include "State/SetClockState.h"
-#include "State/StateMachine.h"
+#include "Circadia.h"
 
-SetClockState::SetClockState(Hardware& hardware, StateMachine& stateMachine) : State(hardware, stateMachine) {
+SetClockState::SetClockState(Hardware& hardware, Circadia& circadia) : State(hardware, circadia) {
 }
 
 void SetClockState::update() {
@@ -32,7 +32,7 @@ void SetClockState::update() {
     }
 
     if((millis() - lastInteraction_) > TIMEOUT) {
-        stateMachine_.setCurrentState(&stateMachine_.getClockState());
+        circadia_.setCurrentState(&circadia_.getClockState());
     }
 }
 

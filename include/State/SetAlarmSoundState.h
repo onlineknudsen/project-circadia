@@ -9,10 +9,10 @@ class SetAlarmSoundState : public State {
         void draw();
         void onEnter();
         void onExit();
-        SetAlarmSoundState(Hardware& hardware, StateMachine& stateMachine);
+        SetAlarmSoundState(Hardware& hardware, Circadia& circadia);
 
     private:
-        unsigned long lastTime_;
+        unsigned long lastInteraction_;
 };
 
 #endif

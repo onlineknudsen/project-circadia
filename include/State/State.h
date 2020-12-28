@@ -3,20 +3,19 @@
 
 #include "Hardware/Hardware.h"
 
-class StateMachine;
+class Circadia;
 
 class State {
     public:
-        State(Hardware& hardware, StateMachine& stateMachine);
+        State(Hardware& hardware, Circadia& circadia);
         virtual void update() = 0;
         virtual void draw() = 0;
         virtual void onEnter() = 0;
         virtual void onExit() = 0;
 
     protected:
-        unsigned long lastTime_;
         Hardware& hardware_;
-        StateMachine& stateMachine_;
+        Circadia& circadia_;
 };
 
 #endif

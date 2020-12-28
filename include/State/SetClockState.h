@@ -10,7 +10,7 @@ class SetClockState : public State {
         void draw();
         void onEnter();
         void onExit();
-        SetClockState(Hardware& hardware, StateMachine& stateMachine);
+        SetClockState(Hardware& hardware, Circadia& circadia);
 
     private:
         unsigned long lastInteraction_;

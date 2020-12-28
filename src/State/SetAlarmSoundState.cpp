@@ -1,7 +1,7 @@
 #include "State/SetAlarmSoundState.h"
-#include "State/StateMachine.h"
+#include "Circadia.h"
 
-SetAlarmSoundState::SetAlarmSoundState(Hardware& hardware, StateMachine& stateMachine) : State(hardware, stateMachine) {
+SetAlarmSoundState::SetAlarmSoundState(Hardware& hardware, Circadia& circadia) : State(hardware, Circadia) {
 }
 
 void SetAlarmSoundState::update() {
@@ -10,7 +10,7 @@ void SetAlarmSoundState::update() {
     }
 
     if((millis() - lastInteraction_) > TIMEOUT) {
-        stateMachine_.setCurrentState(&stateMachine_.getClockState());
+        circadia_.setCurrentState(&Circadia_.getClockState());
     }
 }
 

@@ -1,16 +1,16 @@
 #include "State/ClockState.h"
 
-#include "State/StateMachine.h"
+#include "Circadia.h"
 
 
 void ClockState::update() {
 
     if(hardware_.getInput().checkDPadBtnsHold(DPAD_VERTICAL_AXIS, HOLD_TIME)) {
-        stateMachine_.setCurrentState(&stateMachine_.getSetAlarmState());
+        circadia_.setCurrentState(&circadia_.getSetAlarmState());
     } else if (hardware_.getInput().checkDPadBtnsHold(DPAD_HORIZONTAL_AXIS, HOLD_TIME)) {
-        stateMachine_.setCurrentState(&stateMachine_.getSetClockState());
+        circadia_.setCurrentState(&circadia_.getSetClockState());
     } else if (hardware_.getInput().checkDPadBtnsHold(DPAD_LEFT, HOLD_TIME)) {
-        stateMachine_.setCurrentState(&stateMachine_.getSetAlarmSoundState());
+        circadia_.setCurrentState(&circadia_.getSetAlarmSoundState());
     }
 
     showDate = hardware_.getInput().checkDPadBtnsExclusive(DPAD_DOWN);
@@ -34,7 +34,7 @@ void ClockState::onExit() {
 
 }
 
-ClockState::ClockState(Hardware& hardware, StateMachine& stateMachine) : State(hardware, stateMachine)  {
+ClockState::ClockState(Hardware& hardware, Circadia& Circadia) : State(hardware, Circadia)  {
 
 }
 

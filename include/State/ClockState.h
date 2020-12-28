@@ -9,7 +9,7 @@ class ClockState : public State {
         void draw();
         void onEnter();
         void onExit();
-        ClockState(Hardware& hardware, StateMachine& stateMachine);
+        ClockState(Hardware& hardware, Circadia& circadia);
         ~ClockState();
 
     private:

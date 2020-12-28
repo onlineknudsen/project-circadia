@@ -9,10 +9,10 @@ class SetAlarmState : public State {
         void draw();
         void onEnter();
         void onExit();
-        SetAlarmState(Hardware& hardware, StateMachine& stateMachine);
+        SetAlarmState(Hardware& hardware, Circadia& circadia);
 
     private:
-        unsigned long lastTime_;
+        unsigned long lastInteraction_;
 };
 
 #endif
