@@ -27,6 +27,7 @@ class Input {
         bool getDPadBtn(DPad btn);
 
         bool checkDPadBtnsHold(byte btns, unsigned long time);
+        bool checkDPadBtnsExclusive(byte btns);
         bool checkDPadBtnJustPressed(DPad btn);
 
 
@@ -45,7 +46,6 @@ class Input {
         byte currentHold_;
 
         bool checkDPadBtnHold(DPad btn, unsigned long time);
-        bool checkDPadBtnsExclusive(byte btns);
         bool getOldDPadBtn(DPad btn);
 
 

@@ -13,7 +13,8 @@ class ClockState : public State {
         ~ClockState();
 
     private:
-        char* timeStr_ = new char[8];
+        char* dateTimeStr_ = new char[9];
+        bool showDate = false;
         unsigned long HOLD_TIME = 2000;
 };
 

@@ -9,14 +9,17 @@
 
 class Clock {
     public:
-        void setDateTime(byte year, byte month, byte day, byte dow, byte hour, byte minute, byte second, bool h12Mode);
+        void setDateTime(byte year, byte month, byte day, byte dow, byte hour, byte minute, byte second = 0, bool h12Mode = true);
         void getTimeStr(char* timeStr, int size);
+        void getDateStr(char* dateStr, int size);
 
         void setPrimaryAlarm(byte hour, byte minute, byte second, byte day, bool useDoW = false, byte alarmConfigWord = PRIMARY_ALARM_CONFIG_DEFAULT, bool h12 = true, bool pm = true);
         void setPrimaryAlarm(byte hour, byte minute, byte second, bool useDoW = false, byte alarmConfigWord = PRIMARY_ALARM_CONFIG_DEFAULT, bool h12 = true, bool pm = true);
 
         void setSecondaryAlarm(byte hour, byte minute, byte day, bool useDoW = false, byte alarmConfigWord = SECONDARY_ALARM_CONFIG_DEFAULT, bool h12 = true, bool pm = true);
         void setSecondaryAlarm(byte hour, byte minute, bool useDoW = false, byte alarmConfigWord = SECONDARY_ALARM_CONFIG_DEFAULT, bool h12 = true, bool pm = true);
+
+        DS3231& getRTC();
     private:
         DS3231 rtc_;
         bool pm_;
