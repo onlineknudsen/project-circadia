@@ -11,7 +11,7 @@ void SetClockState::update() {
     }
 
     if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Left)) {
-        byte currComponent = selectedComponent_;
+        int currComponent = selectedComponent_;
         currComponent--;
         if(currComponent < 0) {
             currComponent = sizeof timeComponents - 1;
@@ -19,7 +19,7 @@ void SetClockState::update() {
 
         selectedComponent_ = static_cast<TimeComponent>(currComponent);
     } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Right)) {
-        byte currComponent = selectedComponent_;
+        int currComponent = selectedComponent_;
         currComponent++;
         if(currComponent > sizeof timeComponents - 1) {
             currComponent = 0;
