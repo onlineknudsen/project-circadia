@@ -4,6 +4,10 @@ Hardware::Hardware(int displayCS, int sdCS, int dUpPin, int dDownPin, int dLeftP
 
 }
 
+void Hardware::setup() {
+    alarmClock_.getRTC().setClockMode(true);
+}
+
 Display& Hardware::getDisplay() {
     return display_;
 }

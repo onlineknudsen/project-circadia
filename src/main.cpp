@@ -16,6 +16,7 @@ Circadia circadia(hardware);
 void setup() {
     Serial.begin(115200);
     Wire.begin();
+    hardware.setup();
 }
 
 void loop() {
