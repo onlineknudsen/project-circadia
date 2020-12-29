@@ -1,4 +1,8 @@
 #include "Hardware/Clock.h"
+#include<Wire.h>
+
+#define PRIMARY_ALARM_CONFIG_DEFAULT 0b1000
+#define SECONDARY_ALARM_CONFIG_DEFAULT 0b0100
 
 void Clock::setDateTime(byte year, byte month, byte day, byte dow, byte hour, byte minute, byte second, bool h12Mode) {
     rtc_.setYear(year);
@@ -54,34 +58,25 @@ void Clock::getDateStr(char* dateStr, int size) {
     strcpy(dateStr, str);
 }
 
-void Clock::setPrimaryAlarm(byte hour, byte minute, byte second, byte day, bool useDoW, byte alarmConfigWord, bool h12, bool pm) {
-    rtc_.setA1Time(day, hour, minute, second, alarmConfigWord, useDoW, h12, pm);
-}
+void Clock::setAlarm(byte hour, byte minute, bool pm) {
+    rtc_.setA1Time(1, hour, minute, 0, PRIMARY_ALARM_CONFIG_DEFAULT, false, true, pm);
 
-void Clock::setPrimaryAlarm(byte hour, byte minute, byte second, bool useDoW, byte alarmConfigWord, bool h12, bool pm) {
-    byte day;
-    if(useDoW) {
-        day = rtc_.getDoW();
-    } else {
-        day = rtc_.getDate();
+    byte emergencyHour = hour;
+    byte emergencyMin = minute;
+    bool emergencyPM = pm;
+    if(minute + 5 > 59) {
+        emergencyHour++;
+        emergencyMin = 60 - (minute + 5);
+        if(emergencyHour == 12) {
+            emergencyPM = !emergencyPM;
+        }
     }
 
-    setPrimaryAlarm(hour, minute, second, day, useDoW, alarmConfigWord, h12, pm);
+    rtc_.setA2Time(1, emergencyHour, emergencyMin, SECONDARY_ALARM_CONFIG_DEFAULT, false, true, emergencyPM);
 }
 
-void Clock::setSecondaryAlarm(byte hour, byte minute, byte day, bool useDoW, byte alarmConfigWord, bool h12, bool pm) {
-    rtc_.setA2Time(day, hour, minute, alarmConfigWord, useDoW, h12, pm);
-}
-
-void Clock::setSecondaryAlarm(byte hour, byte minute, bool useDoW, byte alarmConfigWord, bool h12, bool pm) {
-    byte day;
-    if(useDoW) {
-        day = rtc_.getDoW();
-    } else {
-        day = rtc_.getDate();
-    }
-
-    setSecondaryAlarm(hour, minute, day, useDoW, alarmConfigWord, h12, pm);
+bool Clock::isAlarmEnabled() {
+    return rtc_.checkAlarmEnabled(1);
 }
 
 DS3231& Clock::getRTC() {

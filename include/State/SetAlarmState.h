@@ -2,6 +2,7 @@
 #define SET_ALARM_STATE_H
 
 #include "State.h"
+#include "TimeComponent.h"
 
 class SetAlarmState : public State {
     public:
@@ -13,6 +14,13 @@ class SetAlarmState : public State {
 
     private:
         unsigned long lastInteraction_;
+        TimeComponent selectedComponent_;
+        byte alarmComponents[3];
+
+        void increaseSelectedComponent();
+        void decreaseSelectedComponent();
+
+        void generateAlarmStr(char* timeStr, byte size, byte& startingUnderlineChar, byte& endingUnderlineChar);
 };
 
 #endif
