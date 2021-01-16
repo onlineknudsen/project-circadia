@@ -83,3 +83,9 @@ void Display::update() {
 void Display::clear() {
     memset(displayBuffer_, 0, DISPLAY_WIDTH);
 }
+
+void Display::invert() {
+    for(byte col = 0; col < DISPLAY_WIDTH; col++) {
+        displayBuffer_[col] = ~displayBuffer_[col];
+    }
+}

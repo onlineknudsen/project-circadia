@@ -14,6 +14,7 @@ class Display {
         void printMsgCenter(const char* msg);
         void printMsgCenterUnderline(const char* msg, byte startChar, byte endChar);
         void underline(byte startCol, byte endCol);
+        void invert();
         void noUnderline();
         void clear();
         Display(int csPin);
