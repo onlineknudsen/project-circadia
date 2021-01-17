@@ -6,8 +6,7 @@
 #include "State/SetAlarmState.h"
 #include "State/SetClockState.h"
 #include "State/SetAlarmSoundState.h"
-
-class State;
+#include "State/AlarmTriggeredState.h"
 
 #define TIMEOUT 5000
 
@@ -24,6 +23,7 @@ class Circadia {
         State& getSetClockState();
         State& getSetAlarmState();
         State& getSetAlarmSoundState();
+        State& getAlarmTriggeredState();
     private:
         State* currentState_;
 
@@ -33,6 +33,7 @@ class Circadia {
         SetAlarmState setAlarmState_;
         SetClockState setClockState_;
         SetAlarmSoundState setAlarmSoundState_;
+        AlarmTriggeredState alarmTriggeredState_;
 
 
 };

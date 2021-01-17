@@ -1,7 +1,7 @@
 #include "Circadia.h"
 
 
-Circadia::Circadia(Hardware& hardware) : hardware_(hardware), clockState_(hardware, *this), setAlarmState_(hardware, *this), setClockState_(hardware, *this), setAlarmSoundState_(hardware, *this) {
+Circadia::Circadia(Hardware& hardware) : hardware_(hardware), clockState_(hardware, *this), setAlarmState_(hardware, *this), setClockState_(hardware, *this), setAlarmSoundState_(hardware, *this), alarmTriggeredState_(hardware, *this) {
     setCurrentState(&clockState_);
 }
 
@@ -36,6 +36,10 @@ State& Circadia::getSetClockState() {
 
 State& Circadia::getSetAlarmSoundState() {
     return setAlarmSoundState_;
+}
+
+State& Circadia::getAlarmTriggeredState() {
+    return alarmTriggeredState_;
 }
 
 Hardware& Circadia::getHardware() {
