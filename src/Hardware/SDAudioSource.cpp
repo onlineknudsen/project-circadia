@@ -52,8 +52,6 @@ bool SDAudioSource::play() {
 }
 
 void SDAudioSource::loop() {
-    if(!audioEnabled_)
-        return;
     bool isDone = !play();
     if(isDone) {
         restart();
@@ -65,7 +63,7 @@ void SDAudioSource::restart() {
 }
 
 void SDAudioSource::stop() {
-    audioEnabled_ = true;
+    audioEnabled_ = false;
     i2s_zero_dma_buffer(I2S_PORT);
     i2s_stop(I2S_PORT);
 }
