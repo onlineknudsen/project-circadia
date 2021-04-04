@@ -7,6 +7,7 @@
 #include "State/SetClockState.h"
 #include "State/SetAlarmSoundState.h"
 #include "State/AlarmTriggeredState.h"
+#include "State/AlarmStatus.h"
 
 #define TIMEOUT 5000
 
@@ -35,6 +36,12 @@ class Circadia {
         SetAlarmSoundState setAlarmSoundState_;
         AlarmTriggeredState alarmTriggeredState_;
 
+        AlarmStatus alarmStatus_ = AlarmStatus::PrimaryReady;
+
+        void listen();
+        void debugListen();
+
+        friend void AlarmTriggeredState::onExit();
 
 };
 

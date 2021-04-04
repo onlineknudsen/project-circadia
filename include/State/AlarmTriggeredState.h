@@ -9,6 +9,7 @@ class AlarmTriggeredState : public State {
         void draw();
         void onEnter();
         void onExit();
+        void setPrimary(bool isPrimary);
         AlarmTriggeredState(Hardware& hardware, Circadia& circadia);
         ~AlarmTriggeredState();
 
@@ -18,6 +19,8 @@ class AlarmTriggeredState : public State {
         unsigned long timeout_ = 0;
         bool invertOn_;
         const unsigned long FLASH_INTERVAL = 500;
+        bool isPrimaryAlarm_;
+        bool remotePressed_;
 };
 
 #endif

@@ -11,6 +11,9 @@ class Clock {
 
         void setAlarm(byte hour, byte minute, bool pm);
 
+        void toggleAlarm(bool enabled);
+        bool checkAlarmFired(byte alarm);
+
         bool isAlarmEnabled();
 
         DS3231& getRTC();

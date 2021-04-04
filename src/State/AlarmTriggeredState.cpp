@@ -3,7 +3,9 @@
 
 void AlarmTriggeredState::update() {
     // listen to input for snooze or remote button
-
+    // if snooze is pressed, just return to clock and wait for 2nd alarm to fire
+    // if remote is pressed, just return to clock and ignore 2nd alarm
+    // if ignored, just keep going
     // play music
     hardware_.getAudioSource().loop();
     hardware_.getClock().getTimeStr(dateTimeStr_, 9);
@@ -36,14 +38,26 @@ void AlarmTriggeredState::draw() {
     }
 }
 
+void AlarmTriggeredState::setPrimary(bool isPrimary) {
+    isPrimaryAlarm_ = isPrimary;
+}
+
 void AlarmTriggeredState::onEnter() {
-    hardware_.getAudioSource().setAudio("alarm");
     hardware_.getClock().getTimeStr(dateTimeStr_, 9);
-    timeout_ = millis();
+    if(isPrimaryAlarm_) {
+        hardware_.getAudioSource().setAudio("2"); // customizable later at some point
+    } else {
+        hardware_.getAudioSource().setAudio("alarm");
+    }
 }
 
 void AlarmTriggeredState::onExit() {
     hardware_.getAudioSource().stop();
+    if(remotePressed_) {
+        circadia_.alarmStatus_ = AlarmStatus::PrimaryReady;
+        remotePressed_ = false;
+    }
+
 }
 
 AlarmTriggeredState::AlarmTriggeredState(Hardware& hardware, Circadia& circadia) : State(hardware, circadia) {
