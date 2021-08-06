@@ -25,5 +25,7 @@ class Display {
         MD_MAX72XX mx_;
         byte displayBuffer_[DISPLAY_WIDTH];
         byte currentDisplayBuffer_[DISPLAY_WIDTH];
+
+        void debugDisplay();
 };
 #endif

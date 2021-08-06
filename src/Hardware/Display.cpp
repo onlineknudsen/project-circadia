@@ -89,3 +89,13 @@ void Display::invert() {
         displayBuffer_[col] = ~displayBuffer_[col];
     }
 }
+
+void Display::debugDisplay() {
+    Serial.println();
+    for(byte bit = 0; bit < 8; bit++) {
+        for(byte col = 0; col < DISPLAY_WIDTH; col++) {
+            Serial.print(((displayBuffer_[col] >> bit) & 1) ? "█" : " ");
+        }
+        Serial.println();
+    }
+}
