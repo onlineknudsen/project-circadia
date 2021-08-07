@@ -27,10 +27,11 @@ void AlarmTriggeredState::update() {
 
 void AlarmTriggeredState::draw() {
     hardware_.getDisplay().printMsgCenter(dateTimeStr_);
+    long now = millis();
 
-    if(millis() - lastInvert_ > FLASH_INTERVAL) {
+    if(now - lastInvert_ > FLASH_INTERVAL) {
         invertOn_ = !invertOn_;
-        lastInvert_ = millis();
+        lastInvert_ = now;
     }
 
     if(invertOn_) {
