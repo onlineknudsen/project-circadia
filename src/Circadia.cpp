@@ -79,6 +79,8 @@ void Circadia::debugListen() {
             Wire.write(0x0f);
             Wire.write(controlWord & 0b11111100);
             Wire.endTransmission();
+
+            alarmStatus_ = PrimaryReady;
         } else if (input == 'a') {
             byte day;
             byte hour;
@@ -105,9 +107,70 @@ void Circadia::debugListen() {
             Serial.println(str);
             Serial.print("ControlByte = ");
             Serial.println(controlByte, BIN);
+        } else if (input == 't') {
+            byte day;
+            byte hour;
+            byte minute;
+            byte second;
+            byte controlByte;
+            bool temp;
+            bool pm;
+
+            hardware_.getClock().getRTC().getA1Time(day, hour, minute, second, controlByte, temp, temp, pm);
+
+            second = 50;
+
+            if(minute == 0) {
+                minute = 59;
+                if(hour == 1) {
+                    hour = 12;
+                    if(!pm) {
+                        hour = 0;
+                    }
+                } else {
+                    hour += 11;
+                }
+            } else {
+                minute--;
+                hour += 12;
+            }
+
+            hardware_.getClock().getRTC().setHour(hour);
+            hardware_.getClock().getRTC().setMinute(minute);
+            hardware_.getClock().getRTC().setSecond(second);
+        } else if(input == 'y') {
+            byte day;
+            byte hour;
+            byte minute;
+            byte controlByte;
+            byte second;
+            bool temp;
+            bool pm;
+
+            hardware_.getClock().getRTC().getA2Time(day, hour, minute, controlByte, temp, temp, pm);
+
+            second = 50;
+
+            if(minute == 0) {
+                minute = 59;
+                if(hour == 1) {
+                    hour = 12;
+                    if(!pm) {
+                        hour = 0;
+                    }
+                } else {
+                    hour += 11;
+                }
+            } else {
+                minute--;
+                hour += 12;
+            }
+
+            hardware_.getClock().getRTC().setHour(hour);
+            hardware_.getClock().getRTC().setMinute(minute);
+            hardware_.getClock().getRTC().setSecond(second);
         }
     }
-
 
 }
 
