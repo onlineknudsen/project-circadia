@@ -29,12 +29,16 @@ void Circadia::listen() {
     if(alarmStatus_ == AlarmStatus::PrimaryReady) {
         if(hardware_.getClock().checkAlarmFired(1)) {
             alarmStatus_ = AlarmStatus::EmergencyReady;
+            Serial.println("Primary Alarm Fired");
+            hardware_.getClock().clearAlarms();
             alarmTriggeredState_.setPrimary(true);
             setCurrentState(&alarmTriggeredState_);
         }
     } else if(alarmStatus_ == AlarmStatus::EmergencyReady) {
         if(hardware_.getClock().checkAlarmFired(2)) {
             alarmStatus_ = AlarmStatus::EmergencyFired;
+            Serial.println("Secondary Alarm Fired");
+            hardware_.getClock().clearAlarms();
             alarmTriggeredState_.setPrimary(false);
             setCurrentState(&alarmTriggeredState_);
         }

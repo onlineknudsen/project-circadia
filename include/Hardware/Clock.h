@@ -13,6 +13,7 @@ class Clock {
 
         void toggleAlarm(bool enabled);
         bool checkAlarmFired(byte alarm);
+        void clearAlarms();
 
         bool isAlarmEnabled();
 

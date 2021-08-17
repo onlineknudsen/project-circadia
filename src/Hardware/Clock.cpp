@@ -94,8 +94,33 @@ void Clock::setAlarm(byte hour, byte minute, bool pm) {
 // emergency ready (listening for emergency alarm)
 // emergency fired
 
+// TODO: Do custom alarm check using Wire
 bool Clock::checkAlarmFired(byte alarm) {
-    return rtc_.checkIfAlarm(alarm);
+    Wire.beginTransmission(0x68);
+    Wire.write(0x0f);
+    Wire.endTransmission();
+
+    Wire.requestFrom(0x68, 1);
+    byte controlWord = Wire.read();
+
+    if(alarm == 1) {
+        return controlWord & 0b00000001;
+    } else {
+        return controlWord & 0b00000010;
+    }
+}
+
+void Clock::clearAlarms() {
+    Wire.beginTransmission(0x68);
+    Wire.write(0x0f);
+    Wire.endTransmission();
+    Wire.requestFrom(0x68, 1);
+    byte controlWord = Wire.read();
+
+    Wire.beginTransmission(0x68);
+    Wire.write(0x0f);
+    Wire.write(controlWord & 0b11111100);
+    Wire.endTransmission();
 }
 
 // DON'T USE, ONLY TOGGLES FOR INTERRUPTS
