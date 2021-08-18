@@ -15,11 +15,13 @@ void SetAlarmSoundState::update() {
 }
 
 void SetAlarmSoundState::draw() {
-    hardware_.getDisplay().printMsgCenter("SetAS");
+    hardware_.getDisplay().displayScrollLeft();
 }
 
 void SetAlarmSoundState::onEnter() {
     lastInteraction_ = millis();
+    char myString[] = "Song - Artist";
+    hardware_.getDisplay().setScrollMsg(myString);
 }
 
 void SetAlarmSoundState::onExit() {

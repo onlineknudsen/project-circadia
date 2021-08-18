@@ -90,6 +90,49 @@ void Display::invert() {
     }
 }
 
+void Display::setScrollMsg(char* msg) {
+    memset(scrollBuffer_, 0, sizeof scrollBuffer_);
+    byte length = strlen(msg);
+    byte charBuffer[8] = { 0 };
+
+    uint16_t msgWidth = 0;
+    for(byte i = 0; i < length; i++) {
+        byte charWidth = mx_.getChar(msg[i], 8, charBuffer);
+        memcpy(scrollBuffer_ + msgWidth, charBuffer, charWidth);
+        msgWidth += charWidth + CHAR_SPACING;
+    }
+
+    scrollMsgLength_ = msgWidth;
+    currCol_ = -DISPLAY_WIDTH;
+}
+
+// Optimize? I guess memcpy's are cheap but it feels like it's being unnecessary overwritten
+void Display::displayScrollLeft() {
+    if (currCol_ < 0) {
+        memcpy(displayBuffer_ - currCol_, scrollBuffer_, DISPLAY_WIDTH + currCol_);
+    }
+    else if (currCol_ + DISPLAY_WIDTH > SCROLL_WIDTH) {
+        memcpy(displayBuffer_, scrollBuffer_, SCROLL_WIDTH - 1 - currCol_);
+    }
+    else {
+        memcpy(displayBuffer_, scrollBuffer_ + currCol_, DISPLAY_WIDTH);
+        if(currCol_ >= scrollMsgLength_ - (DISPLAY_WIDTH / 2)) {
+            int loopStartCol = currCol_ - scrollMsgLength_ - (DISPLAY_WIDTH / 2);
+            memcpy(displayBuffer_ - loopStartCol, scrollBuffer_, DISPLAY_WIDTH + loopStartCol);
+        }
+    }
+
+    unsigned long now = millis();
+    if(now - lastScroll_ > scrollTime_) {
+        currCol_++;
+
+        if(currCol_ > scrollMsgLength_) {
+            currCol_ = -DISPLAY_WIDTH / 2;
+        }
+        lastScroll_ = now;
+    }
+}
+
 void Display::debugDisplay() {
     Serial.println();
     for(byte bit = 0; bit < 8; bit++) {
