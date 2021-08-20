@@ -136,7 +136,9 @@ void Circadia::debugListen() {
                 }
             } else {
                 minute--;
-                hour += 12;
+                if(pm) {
+                    hour += 12;
+                }
             }
 
             hardware_.getClock().getRTC().setHour(hour);
