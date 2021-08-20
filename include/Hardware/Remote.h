@@ -6,6 +6,7 @@
 class Remote {
     public:
         bool receivedTurnOff();
+        void reset();
         Remote();
     private:
         RH_ASK rfDriver_;

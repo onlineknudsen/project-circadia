@@ -45,6 +45,7 @@ void AlarmTriggeredState::setPrimary(bool isPrimary) {
 
 void AlarmTriggeredState::onEnter() {
     hardware_.getClock().getTimeStr(dateTimeStr_, 9);
+    hardware_.getRemote().reset();
     if(isPrimaryAlarm_) {
         hardware_.getAudioSource().setAudio("2"); // customizable later at some point
     } else {
