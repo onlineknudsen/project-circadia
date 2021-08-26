@@ -6,6 +6,7 @@ SDAudioSource::SDAudioSource(int sdCS, int sdBufferSize, int i2sBClk, int i2sLRC
 
     initSD(sdCS);
     initI2S(i2sBClk, i2sLRC, i2sDataOut);
+    loadSongTitles();
 }
 
 SDAudioSource::~SDAudioSource() {
@@ -13,6 +14,19 @@ SDAudioSource::~SDAudioSource() {
     if(audioFile_)
         audioFile_.close();
     delete sdBuffer_;
+}
+
+void SDAudioSource::setCurrentSong(int index) {
+    if(index > songCount_ - 1 || index < 0) {
+        Serial.println("setCurrentSong: Index out of bounds");
+        return;
+    }
+
+    char title[3];
+    itoa(index, title, 10);
+    setAudio(title);
+
+    currentSongIndex_ = index;
 }
 
 void SDAudioSource::setAudio(const char* name) {
@@ -68,6 +82,45 @@ void SDAudioSource::stop() {
     i2s_stop(I2S_PORT);
 }
 
+void SDAudioSource::getSongTitle(int index, char* title, size_t size) {
+    if(index > songCount_ - 1 || index < 0) {
+        Serial.println("getSongTitle: Index out of bounds");
+        return;
+    }
+
+    if(size < strlen(songTitles_[index])) {
+        Serial.println("Not enough space allocated for song title");
+        return;
+    }
+
+    strcpy(title, songTitles_[index]);
+}
+
+void SDAudioSource::getCurrentSongTitle(char* title, size_t size) {
+    getSongTitle(currentSongIndex_, title, size);
+}
+
+int SDAudioSource::getCurrentSongIndex() {
+    return currentSongIndex_;
+}
+
+void SDAudioSource::loadSongTitles() {
+    if(audioFile_) {
+        audioFile_.close();
+    }
+
+    const int pathStrLength = strlen(audioDir) + strlen("songs.txt");
+    char path[pathStrLength];
+    sprintf(path, "%ssongs.txt", audioDir);
+
+    File songTitleFile_ = SD.open(path);
+
+    while(songTitleFile_.available()) {
+        songTitleFile_.readBytesUntil('\n', songTitles_[songCount_], MAX_SONG_TITLE_LENGTH);
+        songCount_++;
+    }
+    songTitleFile_.close();
+}
 
 void SDAudioSource::initSD(int sdCS) {
     if(!SD.begin(sdCS)) {
