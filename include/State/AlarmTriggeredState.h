@@ -14,7 +14,7 @@ class AlarmTriggeredState : public State {
         ~AlarmTriggeredState();
 
     private:
-        char* dateTimeStr_ = new char[9];
+        char* dateTimeStr_ = new char[9]; // WHY DID I DO THIS???
         unsigned long lastInvert_;
         unsigned long timeout_ = 0;
         bool invertOn_;

@@ -19,7 +19,8 @@ void AlarmTriggeredState::update() {
     }
 
     // listen for remote
-    if(hardware_.getRemote().receivedTurnOff()) {
+    // if(hardware_.getRemote().receivedTurnOff()) {
+    if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Down)) {
         remotePressed_ = true;
         circadia_.setCurrentState(&circadia_.getClockState());
     }
@@ -47,7 +48,7 @@ void AlarmTriggeredState::onEnter() {
     hardware_.getClock().getTimeStr(dateTimeStr_, 9);
     hardware_.getRemote().reset();
     if(isPrimaryAlarm_) {
-        hardware_.getAudioSource().setAudio("2"); // customizable later at some point
+        hardware_.getAudioSource().loadCurrentSong();
     } else {
         hardware_.getAudioSource().setAudio("alarm");
     }

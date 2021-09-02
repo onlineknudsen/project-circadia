@@ -17,16 +17,26 @@ SDAudioSource::~SDAudioSource() {
 }
 
 void SDAudioSource::setCurrentSong(int index) {
-    if(index > songCount_ - 1 || index < 0) {
+    if(index > songCount_ || index < 0) {
         Serial.println("setCurrentSong: Index out of bounds");
         return;
     }
 
-    char title[3];
-    itoa(index, title, 10);
-    setAudio(title);
-
     currentSongIndex_ = index;
+
+    Serial.println(currentSongIndex_);
+}
+
+void SDAudioSource::loadCurrentSong() {
+    char title[3];
+    if(currentSongIndex_ == songCount_) { // Random music selection
+        int randomIndex = random(songCount_);
+        itoa(randomIndex, title, 10);
+    } else {
+        itoa(currentSongIndex_, title, 10);
+    }
+
+    setAudio(title);
 }
 
 void SDAudioSource::setAudio(const char* name) {
@@ -102,6 +112,10 @@ void SDAudioSource::getCurrentSongTitle(char* title, size_t size) {
 
 int SDAudioSource::getCurrentSongIndex() {
     return currentSongIndex_;
+}
+
+byte SDAudioSource::getSongCount() {
+    return songCount_;
 }
 
 void SDAudioSource::loadSongTitles() {

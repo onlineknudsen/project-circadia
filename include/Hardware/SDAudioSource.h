@@ -16,6 +16,7 @@ class SDAudioSource {
         SDAudioSource(int sdCS, int sdBufferSize = SD_BUFFER_SIZE, int i2sBClk = I2S_BCLK, int i2sLRC = I2S_LRC, int i2sDataOut = I2S_DOUT);
         ~SDAudioSource();
         void setCurrentSong(int index);
+        void loadCurrentSong();
         void setAudio(const char* name);
         void loop();
         bool play();
@@ -26,6 +27,7 @@ class SDAudioSource {
         void getCurrentSongTitle(char* title, size_t size);
 
         int getCurrentSongIndex();
+        byte getSongCount();
 
     private:
         void initSD(int sdCS);
