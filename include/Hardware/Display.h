@@ -9,7 +9,10 @@
 #define DISPLAY_WIDTH MAX_DEVICES * COL_SIZE
 #define CHAR_SPACING 1
 
-#define SCROLL_WIDTH DISPLAY_WIDTH * 20 // HOW MUCH MEMORY IS TOO MUCH MEMORY? 32 * 20 = 640 bytes
+// Max characters to display at a time = 5 characters
+// Max character song title 75 characters
+
+#define SCROLL_WIDTH DISPLAY_WIDTH * 15 // HOW MUCH MEMORY IS TOO MUCH MEMORY? 32 * 15 = 480 bytes
 
 class Display {
     public:
@@ -23,7 +26,7 @@ class Display {
 
         void clear();
 
-        void setScrollMsg(char* msg);
+        void setScrollMsg(const char* msg);
         void displayScrollLeft();
 
         Display(int csPin);
@@ -41,7 +44,7 @@ class Display {
         int scrollTime_ = 50; // TODO: Customizable scroll time, based on length of message (long messages faster)
         unsigned long lastScroll_;
 
-        int currCol_ = -DISPLAY_WIDTH;
+        int currCol_ = -DISPLAY_WIDTH / 2;
 
         void debugDisplay();
 };

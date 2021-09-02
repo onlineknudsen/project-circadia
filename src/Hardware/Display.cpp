@@ -90,7 +90,7 @@ void Display::invert() {
     }
 }
 
-void Display::setScrollMsg(char* msg) {
+void Display::setScrollMsg(const char* msg) {
     memset(scrollBuffer_, 0, sizeof scrollBuffer_);
     byte length = strlen(msg);
     byte charBuffer[8] = { 0 };
@@ -103,7 +103,7 @@ void Display::setScrollMsg(char* msg) {
     }
 
     scrollMsgLength_ = msgWidth;
-    currCol_ = -DISPLAY_WIDTH;
+    currCol_ = -DISPLAY_WIDTH / 2;
 }
 
 // Optimize? I guess memcpy's are cheap but it feels like it's being unnecessary overwritten
