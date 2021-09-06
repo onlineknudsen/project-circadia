@@ -1,10 +1,10 @@
 #include "Hardware/Input.h"
 
 Input::Input(byte dUpPin, byte dDownPin, byte dLeftPin, byte dRightPin)  {
-    dPadPins_[DPad::Up] = dUpPin;
-    dPadPins_[DPad::Down] = dDownPin;
-    dPadPins_[DPad::Left] = dLeftPin;
-    dPadPins_[DPad::Right] = dRightPin;
+    dPadPins_[Button::Up] = dUpPin;
+    dPadPins_[Button::Down] = dDownPin;
+    dPadPins_[Button::Left] = dLeftPin;
+    dPadPins_[Button::Right] = dRightPin;
 
     for(byte i = 0; i < 4; i++) {
         pinMode(dPadPins_[i], INPUT_PULLUP);
@@ -39,7 +39,7 @@ void Input::update() {
     }
 }
 
-bool Input::checkDPadBtnHold(DPad btn, unsigned long time) {
+bool Input::checkDPadBtnHold(Button btn, unsigned long time) {
     if(dPadHoldStart_[btn] == 0) {
         return false;
     }
@@ -61,7 +61,7 @@ bool Input::checkDPadBtnsHold(byte btns, unsigned long time) {
     for(byte i = 0; i < 4; i++) {
         bool bit = (btns >> i) & 1;
         if(bit) {
-            if(!checkDPadBtnHold(static_cast<DPad>(i), time))
+            if(!checkDPadBtnHold(static_cast<Button>(i), time))
                 return false;
         }
     }
@@ -70,7 +70,7 @@ bool Input::checkDPadBtnsHold(byte btns, unsigned long time) {
     return true;
 }
 
-bool Input::checkDPadBtnJustPressed(DPad btn) {
+bool Input::checkDPadBtnJustPressed(Button btn) {
     byte btns = (1 << btn);
     if(!checkDPadBtnsExclusive(btns))
         return false;
@@ -85,10 +85,10 @@ byte Input::getDPad() {
     return dPad_;
 }
 
-bool Input::getDPadBtn(DPad btn) {
+bool Input::getDPadBtn(Button btn) {
     return (dPad_ >> btn) & 1;
 }
 
-bool Input::getOldDPadBtn(DPad btn) {
+bool Input::getOldDPadBtn(Button btn) {
     return (oldDPad_ >> btn) & 1;
 }

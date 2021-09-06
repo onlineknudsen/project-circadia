@@ -13,14 +13,14 @@ void AlarmTriggeredState::update() {
     if(isPrimaryAlarm_) {
         // listen for snooze
         // TODO: Change to snooze button
-        if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Up)) {
+        if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Up)) {
             circadia_.setCurrentState(&circadia_.getClockState());
         }
     }
 
     // listen for remote
     // if(hardware_.getRemote().receivedTurnOff()) {
-    if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Down)) {
+    if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Down)) {
         remotePressed_ = true;
         circadia_.setCurrentState(&circadia_.getClockState());
     }

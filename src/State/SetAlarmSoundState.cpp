@@ -9,13 +9,13 @@ void SetAlarmSoundState::update() {
         lastInteraction_ = millis();
     }
 
-    if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Left)) {
+    if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Left)) {
         currentSongIndex_--;
         if(currentSongIndex_ < 0) {
             currentSongIndex_ = songCount_;
         }
         updateSongTitle();
-    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Right)) {
+    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Right)) {
         currentSongIndex_++;
         if(currentSongIndex_ > songCount_) {
             currentSongIndex_ = 0;

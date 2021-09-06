@@ -11,7 +11,7 @@ void SetAlarmState::update() {
         lastInteraction_ = millis();
     }
 
-    if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Left)) {
+    if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Left)) {
         int currComponent = selectedComponent_;
         currComponent--;
         if(currComponent < 0) {
@@ -19,16 +19,16 @@ void SetAlarmState::update() {
         }
 
         selectedComponent_ = static_cast<TimeComponent>(currComponent);
-    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Right)) {
+    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Right)) {
         int currComponent = selectedComponent_;
         currComponent++;
         if(currComponent > sizeof alarmComponents - 1) {
             currComponent = 0;
         }
         selectedComponent_ = static_cast<TimeComponent>(currComponent);
-    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Up)) {
+    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Up)) {
         increaseSelectedComponent();
-    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::DPad::Down)) {
+    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Down)) {
         decreaseSelectedComponent();
     }
 

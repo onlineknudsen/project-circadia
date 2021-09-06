@@ -15,20 +15,22 @@
 
 class Input {
     public:
-        enum DPad {
+        enum Button {
             Up,
             Down,
             Left,
-            Right
+            Right,
+            Snooze,
+            Record
         };
 
         Input(byte dUpPin, byte dDownPin, byte dLeftPin, byte dRightPin);
 
-        bool getDPadBtn(DPad btn);
+        bool getDPadBtn(Button btn);
 
         bool checkDPadBtnsHold(byte btns, unsigned long time);
         bool checkDPadBtnsExclusive(byte btns);
-        bool checkDPadBtnJustPressed(DPad btn);
+        bool checkDPadBtnJustPressed(Button btn);
 
 
         byte getDPad();
@@ -45,8 +47,8 @@ class Input {
         bool holdComplete_;
         byte currentHold_;
 
-        bool checkDPadBtnHold(DPad btn, unsigned long time);
-        bool getOldDPadBtn(DPad btn);
+        bool checkDPadBtnHold(Button btn, unsigned long time);
+        bool getOldDPadBtn(Button btn);
 
 };
 
