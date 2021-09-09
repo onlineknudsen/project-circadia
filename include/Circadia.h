@@ -29,7 +29,7 @@ class Circadia {
         State* currentState_;
 
         Hardware& hardware_;
-        // Clock state
+
         ClockState clockState_;
         SetAlarmState setAlarmState_;
         SetClockState setClockState_;

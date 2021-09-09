@@ -10,10 +10,9 @@ class ClockState : public State {
         void onEnter();
         void onExit();
         ClockState(Hardware& hardware, Circadia& circadia);
-        ~ClockState();
 
     private:
-        char* dateTimeStr_ = new char[9];
+        char dateTimeStr_[9];
         bool showDate = false;
         unsigned long HOLD_TIME = 2000;
 };

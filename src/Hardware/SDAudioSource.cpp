@@ -29,7 +29,7 @@ void SDAudioSource::setCurrentSong(int index) {
 
 void SDAudioSource::loadCurrentSong() {
     char title[3];
-    if(currentSongIndex_ == songCount_) { // Random music selection
+    if(currentSongIndex_ == songCount_) {
         int randomIndex = random(songCount_);
         itoa(randomIndex, title, 10);
     } else {
@@ -148,7 +148,7 @@ void SDAudioSource::initI2S(int i2sBClk, int i2sLRC, int i2sDataOut) {
         .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
         .sample_rate = SAMPLE_RATE,
         .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
-        .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,                           //2-channels
+        .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
         .communication_format = (i2s_comm_format_t)(I2S_COMM_FORMAT_I2S | I2S_COMM_FORMAT_I2S_MSB),
         .intr_alloc_flags = 0,
         .dma_buf_count = 16,

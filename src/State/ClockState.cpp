@@ -34,10 +34,6 @@ void ClockState::onExit() {
 
 }
 
-ClockState::ClockState(Hardware& hardware, Circadia& Circadia) : State(hardware, Circadia)  {
+ClockState::ClockState(Hardware& hardware, Circadia& circadia) : State(hardware, circadia)  {
 
-}
-
-ClockState::~ClockState() {
-    delete dateTimeStr_;
 }

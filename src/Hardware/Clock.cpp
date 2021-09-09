@@ -89,16 +89,10 @@ void Clock::setAlarm(byte hour, byte minute, bool pm) {
     rtc_.setA2Time(1, emergencyHour, emergencyMin, SECONDARY_ALARM_CONFIG_DEFAULT, false, true, emergencyPM);
 }
 
-// ALARM STATES
-// primary ready (listening for primary alarm)
-// emergency ready (listening for emergency alarm)
-// emergency fired
-
-// TODO: Do custom alarm check using Wire
 bool Clock::checkAlarmFired(byte alarm) {
     Wire.beginTransmission(0x68);
     Wire.write(0x0f);
-    Wire.endTransmission();
+    Wire.endTransmission(false);
 
     Wire.requestFrom(0x68, 1);
     byte controlWord = Wire.read();
@@ -113,7 +107,7 @@ bool Clock::checkAlarmFired(byte alarm) {
 void Clock::clearAlarms() {
     Wire.beginTransmission(0x68);
     Wire.write(0x0f);
-    Wire.endTransmission();
+    Wire.endTransmission(false);
     Wire.requestFrom(0x68, 1);
     byte controlWord = Wire.read();
 
@@ -121,21 +115,6 @@ void Clock::clearAlarms() {
     Wire.write(0x0f);
     Wire.write(controlWord & 0b11111100);
     Wire.endTransmission();
-}
-
-// DON'T USE, ONLY TOGGLES FOR INTERRUPTS
-void Clock::toggleAlarm(bool enabled) {
-    if(enabled) {
-        rtc_.turnOnAlarm(1);
-        rtc_.turnOnAlarm(2);
-    } else {
-        rtc_.turnOffAlarm(1);
-        rtc_.turnOffAlarm(2);
-    }
-}
-
-bool Clock::isAlarmEnabled() {
-    return rtc_.checkAlarmEnabled(1);
 }
 
 DS3231& Clock::getRTC() {

@@ -65,7 +65,7 @@ void Circadia::debugListen() {
         } else if (input == 'r') {
             Wire.beginTransmission(0x68);
             Wire.write(0x0f);
-            Wire.endTransmission();
+            Wire.endTransmission(false);
             Wire.requestFrom(0x68, 1);
             byte controlWord = Wire.read();
             Serial.print("A1F = ");
@@ -75,7 +75,7 @@ void Circadia::debugListen() {
         } else if (input == 'c') {
             Wire.beginTransmission(0x68);
             Wire.write(0x0f);
-            Wire.endTransmission();
+            Wire.endTransmission(false);
             Wire.requestFrom(0x68, 1);
             byte controlWord = Wire.read();
 

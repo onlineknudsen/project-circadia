@@ -14,7 +14,7 @@ class SetAlarmSoundState : public State {
     private:
         unsigned long lastInteraction_;
 
-        char currentSongTitle_[75];
+        char currentSongTitle_[MAX_SONG_TITLE_LENGTH];
         int currentSongIndex_ = 0;
         byte songCount_;
 

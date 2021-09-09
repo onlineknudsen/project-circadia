@@ -11,10 +11,9 @@ class AlarmTriggeredState : public State {
         void onExit();
         void setPrimary(bool isPrimary);
         AlarmTriggeredState(Hardware& hardware, Circadia& circadia);
-        ~AlarmTriggeredState();
 
     private:
-        char* dateTimeStr_ = new char[9]; // WHY DID I DO THIS???
+        char dateTimeStr_[8];
         unsigned long lastInvert_;
         unsigned long timeout_ = 0;
         bool invertOn_;

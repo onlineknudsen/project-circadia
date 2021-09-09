@@ -8,7 +8,7 @@ void AlarmTriggeredState::update() {
     // if ignored, just keep going
     // play music
     hardware_.getAudioSource().loop();
-    hardware_.getClock().getTimeStr(dateTimeStr_, 9);
+    hardware_.getClock().getTimeStr(dateTimeStr_, 8);
 
     if(isPrimaryAlarm_) {
         // listen for snooze
@@ -45,7 +45,7 @@ void AlarmTriggeredState::setPrimary(bool isPrimary) {
 }
 
 void AlarmTriggeredState::onEnter() {
-    hardware_.getClock().getTimeStr(dateTimeStr_, 9);
+    hardware_.getClock().getTimeStr(dateTimeStr_, 8);
     hardware_.getRemote().reset();
     if(isPrimaryAlarm_) {
         hardware_.getAudioSource().loadCurrentSong();
@@ -65,8 +65,4 @@ void AlarmTriggeredState::onExit() {
 
 AlarmTriggeredState::AlarmTriggeredState(Hardware& hardware, Circadia& circadia) : State(hardware, circadia) {
 
-}
-
-AlarmTriggeredState::~AlarmTriggeredState() {
-    delete dateTimeStr_;
 }
