@@ -1,56 +1,82 @@
 #include "Hardware/Input.h"
 
-Input::Input(byte dUpPin, byte dDownPin, byte dLeftPin, byte dRightPin)  {
-    dPadPins_[Button::Up] = dUpPin;
-    dPadPins_[Button::Down] = dDownPin;
-    dPadPins_[Button::Left] = dLeftPin;
-    dPadPins_[Button::Right] = dRightPin;
+void Input::setup() {
+    // set as inputs (pull up resistors)
+    Wire.beginTransmission(INPUTS_ADDRESS);
+    Wire.write(INPUTS_I2C_GPPU);
+    Wire.write(INPUTS_BUTTONS_EN);
+    Wire.endTransmission();
 
-    for(byte i = 0; i < 4; i++) {
-        pinMode(dPadPins_[i], INPUT_PULLUP);
-    }
-
+    // reverse the polarity
+    Wire.beginTransmission(INPUTS_ADDRESS);
+    Wire.write(INPUTS_I2C_IPOL);
+    Wire.write(INPUTS_BUTTONS_EN);
+    Wire.endTransmission();
 }
 
 void Input::update() {
-    oldDPad_ = dPad_;
+    oldButtons_ = buttons_;
     if((millis() - lastDebounce_) < DEBOUNCE_THRESHOLD)
         return;
 
     lastDebounce_ = millis();
-    for(byte i = 0; i < 4; i++) {
-        bool btnBit = !digitalRead(dPadPins_[i]);
-        byte posMask = 1 << i;
-        dPad_ = (dPad_ & ~posMask) | (btnBit << i);
-        if(btnBit && !((oldDPad_ & posMask) >> i)) {
-            dPadHoldStart_[i] = millis();
-        } else if(!btnBit && ((oldDPad_ & posMask) >> i)) {
-            dPadHoldStart_[i] = 0;
-            // if this button was part of the hold pattern and it was just released
-            // then we want to say that the hold is no longer complete
-            // posMask    currentHold_
-            // 0b0010  &  0b0011 = 0b0010
 
-            if(posMask & currentHold_) {
-                holdComplete_ =  false;
+    Wire.beginTransmission(INPUTS_ADDRESS);
+    Wire.write(INPUTS_I2C_GPIO);
+    Wire.endTransmission(false);
+    Wire.requestFrom(INPUTS_ADDRESS, 1);
+    buttons_ = Wire.read();
+
+    for(int i = 0; i < 8; i++) {
+        byte buttonMask = 1 << i;
+        if((buttons_ & buttonMask) && !(oldButtons_ & buttonMask)) {
+            buttonsHoldStart_[i] = millis();
+        } else if (!(buttons_ & buttonMask) && (oldButtons_ & buttonMask)) {
+            buttonsHoldStart_[i] = 0;
+
+            if(buttonMask & currentHold_) {
+                holdComplete_ = false;
                 currentHold_ = 0;
             }
         }
     }
 }
 
-bool Input::checkDPadBtnHold(Button btn, unsigned long time) {
-    if(dPadHoldStart_[btn] == 0) {
+byte Input::getButtons() {
+    return buttons_;
+}
+
+bool Input::checkButtonJustPressed(Button btn) {
+    byte btns = (1 << btn);
+    if(!checkButtonsExclusive(btns))
+        return false;
+    return !getOldButton(btn) && getButton(btn);
+}
+
+bool Input::checkButtonsExclusive(byte btns) {
+    return !(btns ^ buttons_);
+}
+
+bool Input::getButton(Button btn) {
+    return (buttons_ >> btn) & 1;
+}
+
+bool Input::getOldButton(Button btn) {
+    return (oldButtons_ >> btn) & 1;
+}
+
+bool Input::checkButtonHold(Button btn, unsigned long time) {
+    if(buttonsHoldStart_[btn] == 0) {
         return false;
     }
 
-    unsigned long deltaTime = millis() - dPadHoldStart_[btn];
+    unsigned long deltaTime = millis() - buttonsHoldStart_[btn];
     return deltaTime >= time;
 }
 
-bool Input::checkDPadBtnsHold(byte btns, unsigned long time) {
+bool Input::checkButtonsHold(byte btns, unsigned long time) {
 
-    if(!checkDPadBtnsExclusive(btns))
+    if(!checkButtonsExclusive(btns))
         return false;
 
     if(holdComplete_)
@@ -61,34 +87,11 @@ bool Input::checkDPadBtnsHold(byte btns, unsigned long time) {
     for(byte i = 0; i < 4; i++) {
         bool bit = (btns >> i) & 1;
         if(bit) {
-            if(!checkDPadBtnHold(static_cast<Button>(i), time))
+            if(!checkButtonHold(static_cast<Button>(i), time))
                 return false;
         }
     }
 
     holdComplete_ = true;
     return true;
-}
-
-bool Input::checkDPadBtnJustPressed(Button btn) {
-    byte btns = (1 << btn);
-    if(!checkDPadBtnsExclusive(btns))
-        return false;
-    return !getOldDPadBtn(btn) && getDPadBtn(btn);
-}
-
-bool Input::checkDPadBtnsExclusive(byte btns) {
-    return !(btns ^ dPad_);
-}
-
-byte Input::getDPad() {
-    return dPad_;
-}
-
-bool Input::getDPadBtn(Button btn) {
-    return (dPad_ >> btn) & 1;
-}
-
-bool Input::getOldDPadBtn(Button btn) {
-    return (oldDPad_ >> btn) & 1;
 }

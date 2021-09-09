@@ -11,6 +11,7 @@ I have been creating vlogs on my [YouTube channel](https://www.youtube.com/chann
 - 433 MHz Superheterodyne RF Receiver
 - 433 MHz Superheterodyne RF Transmitter
 - 4 Ohm 3 Watt Speaker
+- MCP23008 I/O Expander
 
 ## Libraries Used
 - [espressif/arduino-esp32](https://github.com/espressif/arduino-esp32)

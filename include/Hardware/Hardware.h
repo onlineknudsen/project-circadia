@@ -9,7 +9,7 @@
 
 class Hardware {
     public:
-        Hardware(int displayCS, int sdCS, int dUpPin, int dDownPin, int dLeftPin, int dRightPin);
+        Hardware(int displayCS, int sdCS);
 
         void setup();
 

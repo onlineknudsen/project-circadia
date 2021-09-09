@@ -2,16 +2,22 @@
 #define INPUT_H
 
 #include<Arduino.h>
+#include<Wire.h>
 
-#define DPAD_UP (1 << Input::DPad::Up)
-#define DPAD_DOWN (1 << Input::DPad::Down)
-#define DPAD_LEFT (1 << Input::DPad::Left)
-#define DPAD_RIGHT (1 << Input::DPad::Right)
+#define BTN(inputBtn) (1 << inputBtn)
 
-#define DPAD_VERTICAL_AXIS DPAD_UP | DPAD_DOWN
-#define DPAD_HORIZONTAL_AXIS DPAD_LEFT | DPAD_RIGHT
+#define DPAD_VERTICAL_AXIS BTN(Input::Up) | BTN(Input::Down)
+#define DPAD_HORIZONTAL_AXIS BTN(Input::Left) | BTN(Input::Right)
 
+#define INPUTS_ADDRESS 0x20
 
+#define INPUTS_I2C_IODIR 0x00
+#define INPUTS_I2C_IPOL 0x01
+#define INPUTS_I2C_GPINTEN 0x02
+#define INPUTS_I2C_GPPU 0x06
+#define INPUTS_I2C_GPIO 0x09
+
+#define INPUTS_BUTTONS_EN 0x3F
 
 class Input {
     public:
@@ -24,31 +30,28 @@ class Input {
             Record
         };
 
-        Input(byte dUpPin, byte dDownPin, byte dLeftPin, byte dRightPin);
+        byte getButtons();
+        bool checkButtonsHold(byte btns, unsigned long time);
+        bool checkButtonJustPressed(Button btn);
+        bool checkButtonsExclusive(byte btns);
 
-        bool getDPadBtn(Button btn);
-
-        bool checkDPadBtnsHold(byte btns, unsigned long time);
-        bool checkDPadBtnsExclusive(byte btns);
-        bool checkDPadBtnJustPressed(Button btn);
-
-
-        byte getDPad();
+        void setup();
         void update();
 
     private:
-        byte dPad_;
-        byte oldDPad_;
-        unsigned long dPadHoldStart_[4];
-        byte dPadPins_[4];
+        byte buttons_;
+        byte oldButtons_;
+        unsigned long buttonsHoldStart_[8];
+
         const unsigned long DEBOUNCE_THRESHOLD = 50;
         unsigned long lastDebounce_;
 
         bool holdComplete_;
         byte currentHold_;
 
-        bool checkDPadBtnHold(Button btn, unsigned long time);
-        bool getOldDPadBtn(Button btn);
+        bool getButton(Button btn);
+        bool getOldButton(Button btn);
+        bool checkButtonHold(Button btn, unsigned long time);
 
 };
 

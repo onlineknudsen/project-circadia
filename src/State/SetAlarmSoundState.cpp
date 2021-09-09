@@ -5,17 +5,17 @@ SetAlarmSoundState::SetAlarmSoundState(Hardware& hardware, Circadia& circadia) :
 }
 
 void SetAlarmSoundState::update() {
-    if(hardware_.getInput().getDPad()) {
+    if(hardware_.getInput().getButtons()) {
         lastInteraction_ = millis();
     }
 
-    if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Left)) {
+    if(hardware_.getInput().checkButtonJustPressed(Input::Button::Left)) {
         currentSongIndex_--;
         if(currentSongIndex_ < 0) {
             currentSongIndex_ = songCount_;
         }
         updateSongTitle();
-    } else if(hardware_.getInput().checkDPadBtnJustPressed(Input::Button::Right)) {
+    } else if(hardware_.getInput().checkButtonJustPressed(Input::Button::Right)) {
         currentSongIndex_++;
         if(currentSongIndex_ > songCount_) {
             currentSongIndex_ = 0;

@@ -10,7 +10,7 @@
 
 #define SD_CS 16
 
-Hardware hardware(DISP_CS, SD_CS, 32, 33, 27, 14);
+Hardware hardware(DISP_CS, SD_CS);
 Circadia circadia(hardware);
 
 void setup() {

@@ -1,11 +1,12 @@
 #include "Hardware/Hardware.h"
 
-Hardware::Hardware(int displayCS, int sdCS, int dUpPin, int dDownPin, int dLeftPin, int dRightPin) : display_(displayCS), audioSource_(sdCS), input_(dUpPin, dDownPin, dLeftPin, dRightPin) {
+Hardware::Hardware(int displayCS, int sdCS) : display_(displayCS), audioSource_(sdCS) {
 
 }
 
 void Hardware::setup() {
     alarmClock_.getRTC().setClockMode(true);
+    input_.setup();
 }
 
 Display& Hardware::getDisplay() {
