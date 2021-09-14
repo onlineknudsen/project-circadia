@@ -148,8 +148,8 @@ void Circadia::debugListen() {
             byte day;
             byte hour;
             byte minute;
-            byte controlByte;
             byte second;
+            byte controlByte;
             bool temp;
             bool pm;
 
@@ -169,7 +169,9 @@ void Circadia::debugListen() {
                 }
             } else {
                 minute--;
-                hour += 12;
+                if(pm) {
+                    hour += 12;
+                }
             }
 
             hardware_.getClock().getRTC().setHour(hour);

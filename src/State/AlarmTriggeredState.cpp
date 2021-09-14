@@ -12,8 +12,7 @@ void AlarmTriggeredState::update() {
 
     if(isPrimaryAlarm_) {
         // listen for snooze
-        // TODO: Change to snooze button
-        if(hardware_.getInput().checkButtonJustPressed(Input::Button::Up)) {
+        if(hardware_.getInput().checkButtonJustPressed(Input::Button::Snooze)) {
             circadia_.setCurrentState(&circadia_.getClockState());
         }
     }

@@ -23,8 +23,6 @@ void SDAudioSource::setCurrentSong(int index) {
     }
 
     currentSongIndex_ = index;
-
-    Serial.println(currentSongIndex_);
 }
 
 void SDAudioSource::loadCurrentSong() {

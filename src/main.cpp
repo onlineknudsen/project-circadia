@@ -3,7 +3,6 @@
 #include<Wire.h>
 #include<DS3231.h>
 
-#include "Hardware/Hardware.h"
 #include "Circadia.h"
 
 #define DISP_CS 5
